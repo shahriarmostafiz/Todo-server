@@ -32,7 +32,7 @@ async function run() {
     });
     app.get("/todo/:email", async (req, res) => {
       const email = req.params.email;
-      console.log("email:", email);
+      // console.log("email:", email);
       const query = { user: email };
 
       const result = await taskCollection.find(query).toArray();
@@ -56,9 +56,13 @@ async function run() {
       };
       console.log(updateDoc);
       console.log(id);
-      res.send({ info: "will be updated soon " });
+      // res.send({ info: "will be updated soon " });
+      const result = await taskCollection.updateOne(query, updateDoc, options);
+      res.send(result);
     });
-    // Send a ping to confirm a successful connection
+
+    app.put("/todo/edit/:id", async (req, res) => {});
+    // Send a ping to confirm a successful connectio
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
