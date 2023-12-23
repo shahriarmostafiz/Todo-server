@@ -61,7 +61,22 @@ async function run() {
       res.send(result);
     });
 
-    app.put("/todo/edit/:id", async (req, res) => {});
+    app.put("/todo/edit/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: data.name,
+          deadline: data.deadline,
+          details: data.details,
+          priority: data.priority,
+        },
+      };
+      const result = await taskCollection.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connectio
     await client.db("admin").command({ ping: 1 });
     console.log(
